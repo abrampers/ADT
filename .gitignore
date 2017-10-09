@@ -1,5 +1,5 @@
 *
-TugasArrayDinamik/
+TugasArrayDinamik/**/*.c
 !*.c
 !*/
 !.gitignore

@@ -72,40 +72,40 @@ void Add (Queue * Q, infotype X)
 /* I.S. Q mungkin kosong, tabel penampung elemen Q TIDAK penuh */
 /* F.S. X menjadi TAIL yang baru, TAIL "maju" dengan mekanisme circular buffer;
         elemen baru disisipkan pada posisi yang tepat sesuai dengan prioritas */
-{	
+{
+	int i, j, temp;
+
 	if (IsEmpty(*Q)) {
         Head(*Q) = 1;
         Tail(*Q) = 1;
+		InfoTail(*Q) = X;
     } else {
-		if(Prio(X) == 1) {
-			if (Tail(*Q) == MaxEl(*Q)) {
-				Tail(*Q) = 1;
-			} else {
-				Tail(*Q)++;
-			}
-			InfoTail(*Q) = X;
-		} else {
-			if(Prio(X) < Prio(InfoHead(*Q))) {
-				infotype temp1;
-				Del(Q, &temp1);
-				Add(Q, X);
-			} else {
-				if (Head(*Q) == 1) {
-					Head(*Q) = MaxEl(*Q);
-					InfoHead(*Q) = X;
-				} else {
-					Head(*Q)--;
-					InfoHead(*Q) = X;
+		for(i = Head(*Q); i != ((Tail(*Q) % MaxEl(*Q)) + 1); i = (i % MaxEl(*Q)) + 1) {
+			if (Prio(X) > Prio(Elmt(*Q, i))) {
+				if(i - 1 == 0) { temp = MaxEl(*Q); }
+				else { temp = i - 1; }
+				for(j = Tail(*Q) + 1; j != temp; j--) {
+					if(j - 1 == 0) {
+						Elmt(*Q, j) = Elmt(*Q, MaxEl(*Q));
+						j = MaxEl(*Q) + 1;
+					} else Elmt(*Q, j) = Elmt(*Q, j - 1);
 				}
+				Elmt(*Q, i) = X;
+				Tail(*Q)++;
+				break;
 			}
 		}
-	} 
+		if (i == (Tail(*Q) + 1)) {
+			Tail(*Q) = (Tail(*Q) % MaxEl(*Q)) + 1;
+			InfoTail(*Q) = X;
+		}
+	}
 }
 
 void Del (Queue * Q, infotype * X)
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
-/* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer; 
+/* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer;
         Q mungkin kosong */
 {
 	*X = InfoHead(*Q);
@@ -131,13 +131,11 @@ void PrintQueue (Queue Q)
 */
 {
 	infotype temp;
-	
+
 	while(!IsEmpty(Q)) {
 		Del(&Q, &temp);
 		printf("%d %d\n", temp.prio, temp.info);
 	}
-	
+
 	printf("#\n");
 }
-
-
