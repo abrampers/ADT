@@ -5,6 +5,7 @@
  * Topik	: ADT Mesin Kata
 */
 
+/* File: mesintoken.h */
 /* Definisi Mesin Token: Model Akuisisi Versi I */
 
 #include "boolean.h"
@@ -21,7 +22,7 @@ Token CToken;
 
 void IgnoreBlank()
 /* Mengabaikan satu atau beberapa BLANK
-   I.S. : CC sembarang
+   I.S. : CC sembarang 
    F.S. : CC ≠ BLANK atau CC = MARK */
 {
 	while ((CC == BLANK) && (CC != MARK)) {
@@ -30,8 +31,8 @@ void IgnoreBlank()
 }
 
 void STARTTOKEN()
-/* I.S. : CC sembarang
-   F.S. : EndToken = true, dan CC = MARK;
+/* I.S. : CC sembarang 
+   F.S. : EndToken = true, dan CC = MARK; 
           atau EndToken = false, CToken adalah Token yang sudah diakuisisi,
           CC karakter pertama sesudah karakter terakhir Token */
 {
@@ -43,13 +44,13 @@ void STARTTOKEN()
         EndToken = false;
         SalinToken();
     }
-}
+}     
 
 void ADVTOKEN()
-/* I.S. : CC adalah karakter pertama kata yang akan diakuisisi
-   F.S. : CToken adalah Token terakhir yang sudah diakuisisi,
+/* I.S. : CC adalah karakter pertama kata yang akan diakuisisi 
+   F.S. : CToken adalah Token terakhir yang sudah diakuisisi, 
           CC adalah karakter pertama dari kata berikutnya, mungkin MARK
-          Jika CC = MARK, maka EndToken = true
+          Jika CC = MARK, maka EndToken = true      
    Proses : Akuisisi kata menggunakan procedure SalinKata */
 {
 	IgnoreBlank();
@@ -63,8 +64,8 @@ void ADVTOKEN()
 void SalinToken()
 /* Mengakuisisi Token dan menyimpan hasilnya dalam CToken
    I.S. : CC adalah karakter pertama dari Token
-   F.S. : CToken berisi Token yang sudah diakuisisi;
-          CC = BLANK atau CC = MARK;
+   F.S. : CToken berisi Token yang sudah diakuisisi; 
+          CC = BLANK atau CC = MARK; 
           CC adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 {
@@ -76,8 +77,9 @@ void SalinToken()
 			CToken.tkn = CC;
 			CToken.val = -1;
 		} else {
+			int j, temp;
 			CToken.tkn = 'b';
-
+			
 			if (CC == '0') {
 				CToken.val += 0;
 			} else if (CC == '1') {
@@ -99,8 +101,11 @@ void SalinToken()
 			} else if (CC == '9') {
 				CToken.val += 9;
 			}
+			
+			
+			
 		}
-
+		
         ADV();
         if ((CC == MARK) || (CC == BLANK) || (i >= NMax)) {
             break;
@@ -111,3 +116,5 @@ void SalinToken()
     }
     IgnoreBlank();
 }
+
+
